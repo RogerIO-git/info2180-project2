@@ -1,3 +1,7 @@
+/* Extra feature
+   Animation and/or Transition
+*/
+
 var blank =['300px','300px'];
 
 window.onload = function() {
@@ -22,7 +26,7 @@ window.onload = function() {
 
         puzzlePieces[i].addEventListener("click", function() {
             if (this.className.includes("movablepiece")) {
-                move(this);
+                move(this, true);
             }
         });
     }
@@ -60,13 +64,15 @@ function is_movable(piece) {
     return parseInt(piece.style.top) + 100 === parseInt(blank[0]) & parseInt(piece.style.left) === parseInt(blank[1]) | parseInt(piece.style.top) - 100 === parseInt(blank[0]) & parseInt(piece.style.left) === parseInt(blank[1]) | parseInt(piece.style.top) === parseInt(blank[0]) & parseInt(piece.style.left) - 100 === parseInt(blank[1]) | parseInt(piece.style.top) === parseInt(blank[0]) & parseInt(piece.style.left) + 100 === parseInt(blank[1])
 }
 
-function move(piece) {
+function move(piece, animate) {
     var blankTop = piece.style.top,
         blankLeft = piece.style.left;
-
-    piece.style.top = blank[0];
-    piece.style.left = blank[1];
-    
+    if(animate){
+    $(piece).animate({ "top": blank[0], "left": blank[1] }, "slow", "linear");
+    } else {
+        piece.style.top = blank[0];
+        piece.style.left = blank[1];
+    }
     blank = [blankTop, blankLeft];
 }
 
@@ -76,7 +82,7 @@ function shuffle(pieces) {
     for (var i = 0; i < pieces.length; i++) {
         rand = Math.floor(Math.random() * pieces.length);
         piece = pieces.splice(rand, 1);
-        move(piece[0]);
+        move(piece[0], false);
     }
 }
 
